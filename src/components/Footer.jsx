@@ -1,8 +1,8 @@
 function Footer(){
 
     return(
-        <div>
-            <h1>Footer Component</h1>
+        <div className='pb-4'>
+            <h1>@2025 Project. All rights reserved</h1>
         </div>
     )
 }

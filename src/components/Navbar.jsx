@@ -8,15 +8,15 @@ function Navbar() {
         <div className='flex justify-between align-middle text-lg'>
             
             <div>
-                <button className='p-3 text-blue-600 '>
+                <Link className='p-3 text-blue-600' to={'/'}>
                     <EmergencyOutlinedIcon style={{ fontSize: '50px' }} />
-                </button>
+                </Link>
             </div>
 
             <div className='pt-4 flex gap-3'>
-                <a href='#about' className='text-blue-600 '>Who We Are</a>
-                <a href='#'>Who We Serve</a>
-                <a href='#'>Contact Us</a>
+                <Link to={'/about'} className='text-blue-600'>Who We Are</Link>
+                <Link to={'/features'}>What We Do</Link>
+                <Link to={'/reviews'}>Testimonials</Link>
             </div>
 
             <div className='pt-4'>

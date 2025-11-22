@@ -11,7 +11,7 @@ function ImageBlock({url, altText, text}) {
         />
       </div>
       <div className="p-4">
-        <p className="text-sm md:text-base text-gray-700 text-center">{text}</p>
+        <p className="text-sm md:text-base text-center">{text}</p>
       </div>
     </article>
   )
