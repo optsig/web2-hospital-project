@@ -14,8 +14,8 @@ function Navbar() {
             </div>
 
             <div className='pt-4 flex gap-3'>
-                <a href='#' className='text-blue-600 '>Who We Are</a>
-                <a href='#'>What We Do</a>
+                <a href='#about' className='text-blue-600 '>Who We Are</a>
+                <a href='#'>Who We Serve</a>
                 <a href='#'>Contact Us</a>
             </div>
 
