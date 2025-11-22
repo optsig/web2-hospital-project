@@ -1,5 +1,4 @@
 import EmergencyOutlinedIcon from '@mui/icons-material/EmergencyOutlined';
-import '../styles/Navbar.css'
 import { Link } from 'react-router-dom';
 
 function Navbar() {
