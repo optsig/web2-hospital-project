@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { GlobalContext } from "./GlobalContext"
 
-function Login({ data }) {
+function Login() {
 
-    const users = data
+    const { users } = useContext(GlobalContext) 
 
     var UserO = {
         username: "",
@@ -22,7 +23,7 @@ function Login({ data }) {
         users.forEach(element => {
             if(element.username === user.username && element.password === user.password){
                 console.log("Success")
-                setUserType(user.username)
+                setUserType(user.type)
                 if(userType === "patient")
                     nav('/patient')
                 else if(userType === "doctor")

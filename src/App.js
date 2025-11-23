@@ -11,12 +11,9 @@ import Auth from './components/Auth';
 import AdminPage from './components/AdminPage';
 import DoctorPage from './components/DoctorPage';
 import PatientPage from './components/PatientPage';
-import { GlobalContext } from './components/GlobalContext';
-import { useContext } from 'react';
 import { ToastContainer } from 'react-toastify'
-function App() {
 
-  const { users } = useContext(GlobalContext);
+function App() {
 
   const nav = useNavigate()
   function handleRegister() {
@@ -26,7 +23,6 @@ function App() {
   return (
     <>
       <Routes>
-
         <Route path="/" element={<LandingPage />}>
           <Route index element={<Main />} />
           <Route path="about" element={<About />} />
@@ -34,7 +30,7 @@ function App() {
           <Route path="reviews" element={<Testimonials />} />
         </Route>
         <Route path="/login" element={<Auth />}>
-          <Route index element={<Login data={users} />} />
+          <Route index element={<Login />} />
         </Route>
         <Route path="/register" element={<Auth />}>
           <Route index element={<Register handleRegister={handleRegister} />} />
