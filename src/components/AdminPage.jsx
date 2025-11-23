@@ -1,8 +1,13 @@
 import { useState } from "react"
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 
 function AdminDashboard() {
+
+  const mySwal = withReactContent(Swal)
 
   var DoctorO = {
     fullName: "",
@@ -18,8 +23,19 @@ function AdminDashboard() {
   }
 
   const deleteDoctor = (targetName) => {
-    setDoctorList(doctorList.filter((entry) => entry.fullName !== targetName))
+    Swal.fire({
+      icon: 'warning',
+      text: `Delete Dr. ${targetName}?`,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setDoctorList(doctorList.filter((entry) => entry.fullName !== targetName));
+        toast.info("Doctor was deleted successfully");
+      }
+    })
   }
+
+
   return (
     <div className="p-8 max-w-3xl my-24 mx-auto bg-slate-50 h-full">
       <h1 className="text-3xl font-bold text-blue-600 mb-6">Admin Dashboard</h1>
@@ -108,7 +124,7 @@ function AdminDashboard() {
                   </div>
                   <button
                     onClick={() => deleteDoctor(entry.fullName)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition-colors"
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
                   >
                     Remove
                   </button>
