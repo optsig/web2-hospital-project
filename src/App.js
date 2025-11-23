@@ -11,31 +11,12 @@ import Auth from './components/Auth';
 import AdminPage from './components/AdminPage';
 import DoctorPage from './components/DoctorPage';
 import PatientPage from './components/PatientPage';
+import { GlobalContext } from './components/GlobalContext';
+import { useContext } from 'react';
 
 function App() {
 
-  const users = [
-    {
-      id: 1,
-      type: "admin",
-      username: "admin",
-      password: "123"
-    },
-    {
-      id: 2,
-      type: "doctor",
-      username: "doctor",
-      password: "123",
-      availability: []
-    },
-    {
-      id: 3,
-      type: "patient",
-      username: "patient",
-      password: "123",
-      appointments: []
-    }
-  ];
+  const { users } = useContext(GlobalContext);
 
   const nav = useNavigate()
   function handleRegister() {
