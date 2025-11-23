@@ -27,3 +27,50 @@ npm start
 3. Open the app
 
 Open http://localhost:3000 in your browser.
+
+## Project Screenshots:
+
+### Main Page
+
+this page dynamically renders the following components:
+
+#### Hero
+
+![](./screenshots/hero.png)
+
+#### About
+
+![](./screenshots/about.png)
+
+#### Features
+
+![](./screenshots/features.png)
+
+#### Testimonials
+
+![](./screenshots/testimonials.png)
+
+### Auth Page
+
+this page dynamically renders the following components:
+
+#### Register
+
+![](./screenshots/register.png)
+
+#### Login
+
+![](./screenshots/login.png)
+
+### Doctor Page
+
+![](./screenshots/doctor-page.png)
+
+### Patient Page 
+
+![](./screenshots/patient-page.png)
+
+### Admin Page
+
+![](./screenshots/admin-page.png)
+
