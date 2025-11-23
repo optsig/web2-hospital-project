@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 
-function Register() {
+function Register({ handleRegister }) {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <h1 className="mb-5 text-2xl font-semibold">Register</h1>
 
-      <form className="space-y-4">
+      <form className="space-y-4"
+        onSubmit={(e) => { e.preventDefault() }}>
         <div>
           <input
             name="username"
@@ -26,10 +27,20 @@ function Register() {
         </div>
 
         <div>
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Up</button>
+          <button type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            onClick={handleRegister}>
+            Sign Up
+          </button>
         </div>
       </form>
-      <p className="mt-4 text-sm text-gray-600">Already have an account? <Link to={'/login'} className="text-blue-600">Login here</Link></p>
+      <p className="mt-4 text-sm text-gray-600">
+        Already have an account?
+        <Link to={'/login'}
+          className="text-blue-600 ps-1">
+          Login here
+        </Link>
+      </p>
     </div>
   )
 }

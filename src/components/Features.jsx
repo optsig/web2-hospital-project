@@ -10,7 +10,7 @@ function Features() {
         <section id="features" className="py-12">
             <div className="max-w-6xl mx-auto px-4">
                 <header className="mb-8 text-center">
-                    <h2 className="text-blue-600 text-3xl md:text-4xl font-serif font-extrabold">Features</h2>
+                    <h2 className="text-blue-600 text-3xl md:text-4xl font-serif font-extrabold">What We Do</h2>
                     <p className="text-gray-600 mt-2 max-w-2xl mx-auto">Tools and services designed to make healthcare faster, simpler and more personal.</p>
                 </header>
 
