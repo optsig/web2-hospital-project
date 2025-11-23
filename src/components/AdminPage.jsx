@@ -1,24 +1,25 @@
-import { useState } from "react";
+import { useState } from "react"
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function AdminDashboard() {
 
   var DoctorO = {
     fullName: "",
     specialty: "",
-  };
+  }
 
-  const [doctor, setDoctor] = useState(DoctorO);
+  const [doctor, setDoctor] = useState(DoctorO)
 
-  const [doctorList, setDoctorList] = useState([]);
-
+  const [doctorList, setDoctorList] = useState([])
 
   const handleChange = (e) => {
-    setDoctor({ ...doctor, [e.target.name]: e.target.value });
-  };
+    setDoctor({ ...doctor, [e.target.name]: e.target.value })
+  }
 
   const deleteDoctor = (targetName) => {
-    setDoctorList(doctorList.filter((entry) => entry.fullName !== targetName));
-  };
+    setDoctorList(doctorList.filter((entry) => entry.fullName !== targetName))
+  }
   return (
     <div className="p-8 max-w-3xl my-24 mx-auto bg-slate-50 h-full">
       <h1 className="text-3xl font-bold text-blue-600 mb-6">Admin Dashboard</h1>
@@ -47,14 +48,15 @@ function AdminDashboard() {
             className="space-y-4"
 
             onSubmit={(e) => {
-              e.preventDefault();
+              e.preventDefault()
               if (!doctor.fullName.trim() || !doctor.specialty.trim()) {
-                alert("Please fill in both the name and specialty fields.");
-                return;
+                toast.error("Please fill in both the name and specialty fields.")
+                return
               }
-              setDoctorList([...doctorList, doctor]);
-              setDoctor(DoctorO);
-              console.log(doctorList);
+              setDoctorList([...doctorList, doctor])
+              setDoctor(DoctorO)
+              toast.success("Doctor added successfully!");
+              console.log(doctorList)
             }}
           >
             <div>
@@ -117,7 +119,7 @@ function AdminDashboard() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default AdminDashboard;
+export default AdminDashboard
