@@ -2,12 +2,9 @@ import { useState } from "react"
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 
 
 function AdminDashboard() {
-
-  const mySwal = withReactContent(Swal)
 
   var DoctorO = {
     fullName: "",
@@ -79,7 +76,7 @@ function AdminDashboard() {
               <input
                 name="fullName"
                 type="text"
-                placeholder="Doctor's Name"
+                placeholder="Doctor's Full Name"
                 value={doctor.fullName}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
