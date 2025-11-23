@@ -1,5 +1,5 @@
 import Navbar from "./Navbar"
-import Home from "./Home";
+import { Outlet } from "react-router-dom";
 
 function LandingPage() {
     return (
@@ -13,7 +13,7 @@ function LandingPage() {
             </div>
 
             <div>
-                <Home/>
+                <Outlet/>
             </div>
             
         </div>
