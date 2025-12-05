@@ -23,7 +23,8 @@ function Login() {
         users.forEach(element => {
             if(element.username === user.username && element.password === user.password){
                 console.log("Success")
-                setUserType(user.type)
+                setUserType(element.type)
+                console.log(element.type);
                 if(userType === "patient")
                     nav('/patient')
                 else if(userType === "doctor")
