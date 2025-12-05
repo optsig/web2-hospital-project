@@ -7,8 +7,9 @@ import Swal from 'sweetalert2'
 function AdminDashboard() {
 
   var DoctorO = {
-    fullName: "",
-    specialty: "",
+    firstName: "",
+    lastName: "",
+    specialty: ""
   }
 
   const [doctor, setDoctor] = useState(DoctorO)
@@ -19,14 +20,14 @@ function AdminDashboard() {
     setDoctor({ ...doctor, [e.target.name]: e.target.value })
   }
 
-  const deleteDoctor = (targetName) => {
+  const deleteDoctor = (targetFirstName, targetLastName, targetIndex) => {
     Swal.fire({
       icon: 'warning',
-      text: `Delete Dr. ${targetName}?`,
+      text: `Delete Dr. ${targetFirstName} ${targetLastName}?`,
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        setDoctorList(doctorList.filter((entry) => entry.fullName !== targetName));
+        setDoctorList(doctorList.filter((entry) => entry.firstName !== targetFirstName || entry.lastName !==  targetLastName));
         toast.info("Doctor was deleted successfully");
       }
     })
@@ -62,7 +63,7 @@ function AdminDashboard() {
 
             onSubmit={(e) => {
               e.preventDefault()
-              if (!doctor.fullName.trim() || !doctor.specialty.trim()) {
+              if (!doctor.firstName.trim() || !doctor.specialty.trim() || !doctor.lastName.trim()) {
                 toast.error("Please fill in both the name and specialty fields.")
                 return
               }
@@ -74,19 +75,30 @@ function AdminDashboard() {
           >
             <div>
               <input
-                name="fullName"
+                name="firstName"
                 type="text"
-                placeholder="Doctor's Full Name"
-                value={doctor.fullName}
+                placeholder="Doctor's First Name"
+                value={doctor.firstName}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />
             </div>
             <div>
               <input
+                name="lastName"
+                type="text"
+                placeholder="Doctor's Last Name"
+                value={doctor.lastName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+
+            <div>
+              <input
                 name="specialty"
                 type="text"
-                placeholder="Specialty"
+                placeholder="Doctor's Specialty"
                 value={doctor.specialty}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -116,11 +128,11 @@ function AdminDashboard() {
                   className="flex justify-between items-center bg-white p-4 shadow rounded"
                 >
                   <div>
-                    <p className="font-bold">{entry.fullName}</p>
+                    <p className="font-bold">{entry.firstName} {entry.lastName}</p>
                     <p className="text-sm text-gray-600">{entry.specialty}</p>
                   </div>
                   <button
-                    onClick={() => deleteDoctor(entry.fullName)}
+                    onClick={() => deleteDoctor(entry.firstName, entry.lastName, entry.index)}
                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
                   >
                     Remove
