@@ -16,9 +16,6 @@ import { ToastContainer } from 'react-toastify'
 function App() {
 
   const nav = useNavigate()
-  function handleRegister() {
-    nav('/login')
-  }
 
   return (
     <>
@@ -33,7 +30,7 @@ function App() {
           <Route index element={<Login />} />
         </Route>
         <Route path="/register" element={<Auth />}>
-          <Route index element={<Register handleRegister={handleRegister} />} />
+          <Route index element={<Register />} />
         </Route>
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/doctor" element={<DoctorPage />} />

@@ -1,45 +1,61 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { GlobalContext } from "./GlobalContext"
+// import { GlobalContext } from "./GlobalContext"
+import axios from "axios"
 
 function Login() {
 
-    const { users } = useContext(GlobalContext) 
+    // useEffect(() => {
+    //     axios.get("http://localhost:5000/getusers").then((response) => {
+    //         console.log("user data: ", response.data);
+    //         setUsers(response.data)
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     })
+    // }, [])
+
+    // const { users } = useContext(GlobalContext) 
 
     var UserO = {
         username: "",
         password: ""
     }
 
+    // const [users, setUsers] = useState([])
+
     const [user, setUser] = useState(UserO)
 
-    const [userType, setUserType] = useState("")
+    // const [userRole, setUserRole] = useState()
 
     const nav = useNavigate()
 
     const handleLogin = (e) => {
         e.preventDefault()
-        console.log(users)
-        users.forEach(element => {
-            if(element.username === user.username && element.password === user.password){
-                console.log("Success")
-                setUserType(element.type)
-                console.log(element.type);
-                if(userType === "patient")
-                    nav('/patient')
-                else if(userType === "doctor")
-                    nav('/doctor')
-                else if(userType === "admin")
-                    nav('/admin')        
+        axios.post("http://localhost:5000/verifyuser", user).then((response) => {
+            console.log("user: ", user);
+            console.log("response: ", response);
+            if (response.status === 404) {
+                console.log("username or password incorrect");
             }
-        });
-     }
+            else if (response.status === 200){
+                console.log("success");
+                console.log("data: ", response.data);
+                const userRole = response.data[0].role_id
+                if(userRole === 3)
+                    nav('/patient')
+                else if(userRole === 2)
+                    nav('/doctor')
+                else if(userRole === 1)
+                    nav('/admin')      
+            }
+        }).catch((err) => {
+            console.log("Error: ", err);
+        })
+    }
 
     const handleChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
-    
-
 
     return (
 

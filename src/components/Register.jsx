@@ -1,6 +1,41 @@
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-function Register({ handleRegister }) {
+
+function Register() {
+
+  var UserO = {
+    username: "",
+    password: ""
+  }
+
+  const [user, setUser] = useState(UserO)
+
+  const nav = useNavigate()
+
+  function handleRegister() {
+    axios.post("http://localhost:5000/adduser", user).then((response) => {
+      console.log("user: ", user);
+      console.log("response: ", response);
+      toast.success("registration successful");
+      nav('/login');
+    }).catch((err) => {
+      console.log("Error: ", err);
+      if(err.status === 400){
+        toast.error("please fill out the fields")
+      }
+      else if(err.status === 418){
+        toast.error("user with that username already exists")
+      }
+    })
+  }
+
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
@@ -14,6 +49,7 @@ function Register({ handleRegister }) {
             type="text"
             placeholder="Username"
             className="w-full px-4 py-2 border rounded-lg"
+            onChange={handleChange}
           />
         </div>
 
@@ -23,6 +59,7 @@ function Register({ handleRegister }) {
             type="password"
             placeholder="Password"
             className="w-full px-4 py-2 border rounded-lg"
+            onChange={handleChange}
           />
         </div>
 
