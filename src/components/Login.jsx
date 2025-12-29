@@ -1,56 +1,74 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-// import { GlobalContext } from "./GlobalContext"
+import { GlobalContext } from "./GlobalContext"
 import axios from "axios"
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Login() {
-
-    // useEffect(() => {
-    //     axios.get("http://localhost:5000/getusers").then((response) => {
-    //         console.log("user data: ", response.data);
-    //         setUsers(response.data)
-    //     }).catch((error) => {
-    //         console.log(error);
-    //     })
-    // }, [])
-
-    // const { users } = useContext(GlobalContext) 
 
     var UserO = {
         username: "",
         password: ""
     }
 
-    // const [users, setUsers] = useState([])
-
     const [user, setUser] = useState(UserO)
+
+    const {setUsername} = useContext(GlobalContext)
 
     // const [userRole, setUserRole] = useState()
 
     const nav = useNavigate()
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
-        axios.post("http://localhost:5000/verifyuser", user).then((response) => {
-            console.log("user: ", user);
-            console.log("response: ", response);
-            if (response.status === 404) {
-                console.log("username or password incorrect");
-            }
-            else if (response.status === 200){
+        console.log(user)
+        try {
+            const response = await axios.post("http://localhost:5000/verifyuser", user)
+
+            if (response.status === 200) {
                 console.log("success");
                 console.log("data: ", response.data);
-                const userRole = response.data[0].role_id
-                if(userRole === 3)
+                
+                setUsername(response.name)
+                
+                const userRole = response.data.id
+                if (userRole === 3)
                     nav('/patient')
-                else if(userRole === 2)
+                else if (userRole === 2)
                     nav('/doctor')
-                else if(userRole === 1)
-                    nav('/admin')      
+                else if (userRole === 1)
+                    nav('/admin')
             }
-        }).catch((err) => {
-            console.log("Error: ", err);
-        })
+
+        }
+        catch (error) {
+            console.log("ERROR:", error.response);
+
+
+            if (error.response) {
+                const status = error.response.status
+                const err = error.response.data.error
+                if (status === 400) {
+                    console.log("ERROR2:", err);
+                    const errors = error.response.data.error
+                    for (const i of errors) {
+                        toast.error(i)
+                    }
+                }
+                else if(status === 404){
+                    console.log("ERROR2:", err);
+                    toast.error("incorrect username")
+                    
+                }                
+                else if(status === 401){
+                    toast.error("incorrect password")
+                }
+
+            }
+        }
+
+
     }
 
     const handleChange = (e) => {
