@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
@@ -16,7 +16,6 @@ import { ToastContainer } from 'react-toastify'
 
 function App() {
 
-  const nav = useNavigate()
 
   return (
     <>

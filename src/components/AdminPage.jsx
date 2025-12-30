@@ -15,8 +15,6 @@ function AdminDashboard() {
     password: ""
   }
 
-
-
   const [doctor, setDoctor] = useState(DoctorO)
 
   const [doctorList, setDoctorList] = useState([])
@@ -37,6 +35,7 @@ function AdminDashboard() {
           if (response.status === 200) {
             setDoctorList(doctorList.filter((doctor) => doctor.id !== targetId))
             toast.info("Doctor was deleted successfully")
+            getDoctors()
           }
         }
         catch (error) {
@@ -48,32 +47,39 @@ function AdminDashboard() {
 
   const addDoctor = async () => {
     const doctorToAdd = doctor
-    if(!doctor.firstName){
+    if (!doctor.firstName) {
       toast.error("please fill in the first name")
     }
-    if(!doctor.lastName){
+    if (!doctor.lastName) {
       toast.error("please fill in the last name")
     }
-    if(!doctor.specialty){
+    if (!doctor.specialty) {
       toast.error("please fill in the specialty")
     }
-    if(!doctor.username){
+    if (!doctor.username) {
       toast.error("please fill in the username")
     }
-     if(!doctor.password){
+    if (!doctor.password) {
       toast.error("please fill in the password")
     }
 
-    try{
+    try {
       const response = await axios.post("http://localhost:5000/adddoctor", doctor)
-      if(response.status === 201){
-        const newDoctor = {...doctorToAdd}
+      if (response.status === 201) {
+        const newDoctor = { ...doctorToAdd }
         setDoctorList([...doctorList, newDoctor])
         setDoctor(DoctorO)
         toast.success("doctor added successfully")
-      }     
+        getDoctors()
+      }
     }
-    catch(error){
+    catch (error) {
+      if (error.response.status === 400 && error.response.data.type === "duplicate_user") {
+        toast.error("username already exists")
+      }
+      else if (error.response.status === 400 && error.response.data.type === "duplicate_doctor") {
+        toast.error("doctor with the same first and last names exists already exists")
+      }
       console.log("ERROR IN ADD DOCTOR: ", error);
     }
   }
@@ -87,13 +93,45 @@ function AdminDashboard() {
       }
     }
     catch (error) {
-      console.log("ERROR IN GET DOCTORS:", error)
+      console.log("error in getDoctors: ", error)
+    }
+  }
+
+  const [appointmentsNum, setAppointmentsNum] = useState()
+
+  const getAppointmentsNumber = async() => {
+    try{
+      const response = await axios.get("http://localhost:5000/getnumberofappointments")
+      console.log("response in getAppointmentsNumber:", response)
+       if (response.status === 200) {
+        console.log("RESPONSE STRUCTURE:", response)
+        setAppointmentsNum(response.data.count)
+      }
+    }
+    catch (error) {
+      console.log("error in get getAppointmentsNumber:", error)
+    }
+  }
+
+  const [patientsNum, setPatientsNum] = useState()
+
+  const getPatientsNum = async() => {
+    try{
+      const response = await axios.get("http://localhost:5000/getnumberofpatients")
+       if (response.status === 200) {
+        setPatientsNum(response.data.count)
+      }
+    }
+    catch (error) {
+      console.log("error in get getPatientsNum:", error)
     }
   }
 
   useEffect(() => {
     getDoctors()
-  }, [doctorList])
+    getAppointmentsNumber()
+    getPatientsNum()
+  }, [])
 
 
   return (
@@ -108,12 +146,12 @@ function AdminDashboard() {
 
         <div className="bg-white shadow p-6 rounded-lg">
           <p className="text-gray-500 text-sm">Total Patients</p>
-          <p className="text-2xl font-bold">32</p>
+          <p className="text-2xl font-bold">{patientsNum}</p>
         </div>
 
         <div className="bg-white shadow p-6 rounded-lg">
           <p className="text-gray-500 text-sm">Total Appointments</p>
-          <p className="text-2xl font-bold">8</p>
+          <p className="text-2xl font-bold">{appointmentsNum}</p>
         </div>
       </div>
 
