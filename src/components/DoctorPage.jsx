@@ -13,9 +13,9 @@ function DoctorPage() {
   }
 
   const initialAppointments = [
-    { patient: "Alice Johnson", date: "2025-11-25", time: "10:00 AM", reason: "Annual checkup" },
-    { patient: "Bob Smith", date: "2025-11-25", time: "02:30 PM", reason: "Follow-up consultation" },
-    { patient: "Charlie Brown", date: "2025-11-26", time: "09:00 AM", reason: "New patient visit" },
+    { patient: "Alice Johnson", date: "2025-11-25", time: "10:00 AM"},
+    { patient: "Bob Smith", date: "2025-11-25", time: "02:30 PM" },
+    { patient: "Charlie Brown", date: "2025-11-26", time: "09:00 AM"},
   ];
 
   const [doctorAvailability, setDoctorAvailability] = useState(AvailabilityO);
@@ -175,7 +175,6 @@ function DoctorPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
@@ -185,7 +184,6 @@ function DoctorPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{entry.patient}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{entry.date}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{entry.time}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{entry.reason}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => cancelAppointment(entry.patient)}

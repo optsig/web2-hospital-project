@@ -41,6 +41,10 @@ function AdminDashboard() {
           }
         }
         catch (error) {
+          if(error.response.status === 404 && error.response.type === "doctor_not_found"){
+            toast.error("doctor was already deleted")
+            getDoctors()
+          }
           console.log("ERROR IN DELETE DOCTOR: ", error)
         }
       }

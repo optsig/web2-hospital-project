@@ -9,7 +9,7 @@ import { GlobalContext } from "./GlobalContext"
 function PatientPage() {
 
   const { username, userId } = useContext(GlobalContext)
-
+  const [avId, setAvId] = useState()
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -44,36 +44,66 @@ function PatientPage() {
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        setPatientAppointmentsList([...patientAppointmentsList, slot]);
-        setAvailableSlots(
-          availableSlots.filter(
-            (s) =>
-              !(
-                s.doctor === slot.doctor &&
-                s.date === slot.date &&
-                s.time === slot.time
-              )
-          )
-        );
-        toast.success("Appointment booked successfully");
+        setAvId(slot.id)
+        handleBooking()
       }
     });
   };
 
-  const cancelAppointment = (doctorName) => {
+  const cancelAppointment = (appointment) => {
     Swal.fire({
       icon: "warning",
-      text: `Cancel your appointment with ${doctorName}?`,
+      text: `Cancel your appointment with Dr. ${appointment.first_name} ${appointment.last_name}?`,
       showCancelButton: true,
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setPatientAppointmentsList(
-          patientAppointmentsList.filter((entry) => entry.doctor !== doctorName)
-        );
-        toast.info("Appointment was canceled");
+        try {
+          const response = await axios.delete("http://localhost:5000/appointments/" + appointment.id);
+          if (response.status === 200) {
+            toast.info("appointment was canceled");
+            getAppointments();
+            getAvailabilities();
+          }
+        }
+        catch (error) {
+          if (error.response.status === 404) {
+            toast.error("This appointment no longer exists.");
+            getAppointments();
+            getAvailabilities();
+          }
+          console.log("error in cancel appointment: ", error);
+
+        }
+
       }
     });
   };
+
+  const handleBooking = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/bookappointment", { userId: userId, availabilityId: avId })
+      if (response.status === 201) {
+        toast.success("appointment booked successfully")
+        getAvailabilities()
+        getAppointments()
+      }
+    }
+    catch (error) {
+      // if (error.response.status === 400) {
+      //   toast.error("something went wrong, please relogin")
+      // }
+      if (error.response.status === 404) {
+        toast.error("This availability got canceled")
+        getAvailabilities()
+      }
+      else if (error.response.status === 409) {
+        toast.error("this slot was just booked by someone else")
+        getAvailabilities()
+      }
+      console.log("ERROR IN ADD handle Booking: ", error);
+
+    }
+  }
 
   const getAvailabilities = async () => {
     try {
@@ -100,9 +130,9 @@ function PatientPage() {
         console.log("APPTS RESPONSE DATA FORMAT:", response.data)
         setPatientAppointmentsList(response.data)
       }
-      if(response.status === 204){
+      if (response.status === 204) {
         console.log("no appts found for user_id: ", userId);
-        
+
       }
 
     }
@@ -180,7 +210,7 @@ function PatientPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatTime(slot.availability_time)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
                       {slot.specialty}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -240,7 +270,7 @@ function PatientPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
-                        onClick={() => cancelAppointment(entry.index)}
+                        onClick={() => cancelAppointment(entry)}
                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition duration-150"
                       >
                         Cancel
