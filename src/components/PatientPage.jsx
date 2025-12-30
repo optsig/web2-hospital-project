@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function PatientPage() {
-  const initialAvailability = [
-    { doctor: "Dr. Alice Johnson", date: "2025-11-25", time: "10:00 AM" },
-    { doctor: "Dr. Bob Smith", date: "2025-11-25", time: "02:30 PM" },
-    { doctor: "Dr. Charlie Brown", date: "2025-11-26", time: "09:00 AM" },
-  ];
 
-  const [availableSlots, setAvailableSlots] = useState(initialAvailability);
+  const [availableSlots, setAvailableSlots] = useState([]);
+
   const [patientAppointmentsList, setPatientAppointmentsList] = useState([]);
 
   const bookAppointment = (slot) => {
@@ -50,6 +47,29 @@ function PatientPage() {
       }
     });
   };
+
+  const getAvailabilities = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/getavailabilities")
+      console.log("RESPONSE IN getAvailabilities:", response)
+      if (response.status === 200) {
+        setAvailableSlots(response.data)
+        console.log("AVAILABILITY RESPONSE DATA FORMAT:", response.data)
+      }
+      else if (response.status === 204) {
+        setAvailableSlots([])
+      }
+    }
+    catch (error) {
+      console.log("error in getDoctors: ", error)
+    }
+  }
+
+  useEffect(() => {
+    getAvailabilities()
+  }, [])
+
+
 
   return (
     <div className="p-4 md:p-8 max-w-6xl my-12 mx-auto bg-white rounded-xl shadow-2xl">
@@ -93,6 +113,9 @@ function PatientPage() {
                     Time
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                    Specialty
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
                     Action
                   </th>
                 </tr>
@@ -102,13 +125,16 @@ function PatientPage() {
                 {availableSlots.map((slot, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {slot.doctor}
+                      {slot.first_name + " " + slot.last_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {slot.date}
+                      {slot.availability_date}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {slot.time}
+                      {slot.availability_time}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {slot.specialty}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
