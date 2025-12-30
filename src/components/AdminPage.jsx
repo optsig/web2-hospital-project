@@ -1,4 +1,5 @@
-import { useState } from "react"
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Swal from 'sweetalert2'
@@ -9,8 +10,12 @@ function AdminDashboard() {
   var DoctorO = {
     firstName: "",
     lastName: "",
-    specialty: ""
+    specialty: "",
+    username: "",
+    password: ""
   }
+
+
 
   const [doctor, setDoctor] = useState(DoctorO)
 
@@ -20,18 +25,75 @@ function AdminDashboard() {
     setDoctor({ ...doctor, [e.target.name]: e.target.value })
   }
 
-  const deleteDoctor = (targetFirstName, targetLastName, targetIndex) => {
+  const deleteDoctor = (targetFirstName, targetLastName, targetId) => {
     Swal.fire({
       icon: 'warning',
       text: `Delete Dr. ${targetFirstName} ${targetLastName}?`,
       showCancelButton: true,
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setDoctorList(doctorList.filter((entry) => entry.firstName !== targetFirstName || entry.lastName !==  targetLastName));
-        toast.info("Doctor was deleted successfully");
+        try {
+          const response = await axios.delete("http://localhost:5000/doctors/" + targetId)
+          if (response.status === 200) {
+            setDoctorList(doctorList.filter((doctor) => doctor.id !== targetId))
+            toast.info("Doctor was deleted successfully")
+          }
+        }
+        catch (error) {
+          console.log("ERROR IN DELETE DOCTOR: ", error)
+        }
       }
     })
   }
+
+  const addDoctor = async () => {
+    const doctorToAdd = doctor
+    if(!doctor.firstName){
+      toast.error("please fill in the first name")
+    }
+    if(!doctor.lastName){
+      toast.error("please fill in the last name")
+    }
+    if(!doctor.specialty){
+      toast.error("please fill in the specialty")
+    }
+    if(!doctor.username){
+      toast.error("please fill in the username")
+    }
+     if(!doctor.password){
+      toast.error("please fill in the password")
+    }
+
+    try{
+      const response = await axios.post("http://localhost:5000/adddoctor", doctor)
+      if(response.status === 201){
+        const newDoctor = {...doctorToAdd}
+        setDoctorList([...doctorList, newDoctor])
+        setDoctor(DoctorO)
+        toast.success("doctor added successfully")
+      }     
+    }
+    catch(error){
+      console.log("ERROR IN ADD DOCTOR: ", error);
+    }
+  }
+
+  const getDoctors = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/getdoctors")
+      console.log("RESPONSE IN GETDOCTORS:", response)
+      if (response.status === 200) {
+        setDoctorList(response.data)
+      }
+    }
+    catch (error) {
+      console.log("ERROR IN GET DOCTORS:", error)
+    }
+  }
+
+  useEffect(() => {
+    getDoctors()
+  }, [doctorList])
 
 
   return (
@@ -63,14 +125,7 @@ function AdminDashboard() {
 
             onSubmit={(e) => {
               e.preventDefault()
-              if (!doctor.firstName.trim() || !doctor.specialty.trim() || !doctor.lastName.trim()) {
-                toast.error("Please fill in both the name and specialty fields.")
-                return
-              }
-              setDoctorList([...doctorList, doctor])
-              setDoctor(DoctorO)
-              toast.success("Doctor added successfully!");
-              console.log(doctorList)
+              addDoctor()
             }}
           >
             <div>
@@ -105,6 +160,28 @@ function AdminDashboard() {
               />
             </div>
 
+            <div>
+              <input
+                name="username"
+                type="text"
+                placeholder="Doctor's username"
+                value={doctor.username}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+
+            <div>
+              <input
+                name="password"
+                type="text"
+                placeholder="Doctor's password"
+                value={doctor.password}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
               Add Doctor
             </button>
@@ -128,11 +205,11 @@ function AdminDashboard() {
                   className="flex justify-between items-center bg-white p-4 shadow rounded"
                 >
                   <div>
-                    <p className="font-bold">{entry.firstName} {entry.lastName}</p>
+                    <p className="font-bold">{entry.first_name} {entry.last_name}</p>
                     <p className="text-sm text-gray-600">{entry.specialty}</p>
                   </div>
                   <button
-                    onClick={() => deleteDoctor(entry.firstName, entry.lastName, entry.index)}
+                    onClick={() => deleteDoctor(entry.first_name, entry.last_name, entry.id)}
                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
                   >
                     Remove

@@ -14,12 +14,12 @@ function Login() {
 
     const [user, setUser] = useState(UserO)
 
-    const {setUsername} = useContext(GlobalContext)
+    const {setUsername, setUserRole, setIsAuthenticated} = useContext(GlobalContext)
 
     // const [userRole, setUserRole] = useState()
 
     const nav = useNavigate()
-
+    
     const handleLogin = async (e) => {
         e.preventDefault()
         console.log(user)
@@ -33,6 +33,8 @@ function Login() {
                 setUsername(response.name)
                 
                 const userRole = response.data.id
+                setUserRole(userRole)
+                setIsAuthenticated(true)
                 if (userRole === 3)
                     nav('/patient')
                 else if (userRole === 2)
@@ -67,8 +69,7 @@ function Login() {
 
             }
         }
-
-
+        
     }
 
     const handleChange = (e) => {

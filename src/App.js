@@ -11,6 +11,7 @@ import Auth from './components/Auth';
 import AdminPage from './components/AdminPage';
 import DoctorPage from './components/DoctorPage';
 import PatientPage from './components/PatientPage';
+import ProtectedRoute from './components/ProtectedRoute';
 import { ToastContainer } from 'react-toastify'
 
 function App() {
@@ -32,9 +33,9 @@ function App() {
         <Route path="/register" element={<Auth />}>
           <Route index element={<Register />} />
         </Route>
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/doctor" element={<DoctorPage />} />
-        <Route path="/patient" element={<PatientPage />} />
+        <Route path="/admin" element={<ProtectedRoute requiredRole={1}><AdminPage /></ProtectedRoute>} />
+        <Route path="/doctor" element={<ProtectedRoute requiredRole={2}><DoctorPage /></ProtectedRoute>} />
+        <Route path="/patient" element={<ProtectedRoute requiredRole={3}><PatientPage /></ProtectedRoute>} />
       </Routes>
       <ToastContainer />
     </>

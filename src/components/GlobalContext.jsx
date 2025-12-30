@@ -6,8 +6,10 @@ const name = ""
 
 function GlobalContextProvider({ children }) {
     const [username, setUsername] = useState(name)
+    const [userRole, setUserRole] = useState(null)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
   return (
-    <GlobalContext.Provider value={{ username, setUsername }}>
+    <GlobalContext.Provider value={{ username, setUsername, userRole, setUserRole, isAuthenticated, setIsAuthenticated }}>
       {children}
     </GlobalContext.Provider>
   );
