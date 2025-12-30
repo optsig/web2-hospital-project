@@ -14,7 +14,7 @@ function Login() {
 
     const [user, setUser] = useState(UserO)
 
-    const {setUsername, setUserRole, setIsAuthenticated} = useContext(GlobalContext)
+    const {setUsername, setUserRole, setIsAuthenticated, setUserId} = useContext(GlobalContext)
 
     // const [userRole, setUserRole] = useState()
 
@@ -30,10 +30,11 @@ function Login() {
                 console.log("success");
                 console.log("data: ", response.data);
                 
-                setUsername(response.name)
+                setUsername(response.data.name)
                 
-                const userRole = response.data.id
+                const userRole = response.data.role_id
                 setUserRole(userRole)
+                setUserId(response.data.user_id)
                 setIsAuthenticated(true)
                 if (userRole === 3)
                     nav('/patient')

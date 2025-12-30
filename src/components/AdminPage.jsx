@@ -1,11 +1,13 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Swal from 'sweetalert2'
-
+import { GlobalContext } from "./GlobalContext"
 
 function AdminDashboard() {
+
+  const {username} = useContext(GlobalContext)
 
   var DoctorO = {
     firstName: "",
@@ -136,7 +138,7 @@ function AdminDashboard() {
 
   return (
     <div className="p-8 max-w-3xl my-24 mx-auto bg-slate-50 h-full">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold text-blue-600 mb-6">Hello {username}</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
         <div className="bg-white shadow p-6 rounded-lg">

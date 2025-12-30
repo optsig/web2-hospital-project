@@ -1,10 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { GlobalContext } from "./GlobalContext"
+
 
 function PatientPage() {
+
+  const { username, userId } = useContext(GlobalContext)
+
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  };
+
+  const formatTime = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    const date = new Date();
+    date.setHours(hours, minutes);
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    });
+  };
+
 
   const [availableSlots, setAvailableSlots] = useState([]);
 
@@ -13,7 +40,7 @@ function PatientPage() {
   const bookAppointment = (slot) => {
     Swal.fire({
       icon: "question",
-      text: `Book an appointment with ${slot.doctor} on ${slot.date} at ${slot.time}?`,
+      text: `Book an appointment with Dr.${slot.first_name + " " + slot.last_name} on ${formatDate(slot.availability_date)} at ${formatTime(slot.availability_time)}?`,
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -53,8 +80,8 @@ function PatientPage() {
       const response = await axios.get("http://localhost:5000/getavailabilities")
       console.log("RESPONSE IN getAvailabilities:", response)
       if (response.status === 200) {
-        setAvailableSlots(response.data)
         console.log("AVAILABILITY RESPONSE DATA FORMAT:", response.data)
+        setAvailableSlots(response.data)
       }
       else if (response.status === 204) {
         setAvailableSlots([])
@@ -65,8 +92,28 @@ function PatientPage() {
     }
   }
 
+  const getAppointments = async () => {
+    try {
+      console.log("USER ID: ", userId);
+      const response = await axios.get("http://localhost:5000/getappointments/" + userId)
+      if (response.status === 200) {
+        console.log("APPTS RESPONSE DATA FORMAT:", response.data)
+        setPatientAppointmentsList(response.data)
+      }
+      if(response.status === 204){
+        console.log("no appts found for user_id: ", userId);
+        
+      }
+
+    }
+    catch (error) {
+      console.log("error in getAppointments: ", error)
+    }
+  }
+
   useEffect(() => {
     getAvailabilities()
+    getAppointments()
   }, [])
 
 
@@ -74,7 +121,7 @@ function PatientPage() {
   return (
     <div className="p-4 md:p-8 max-w-6xl my-12 mx-auto bg-white rounded-xl shadow-2xl">
       <h1 className="text-3xl md:text-4xl font-extrabold text-blue-600 mb-8 border-b pb-4">
-        Patient Dashboard
+        Hello {username}
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
@@ -128,10 +175,10 @@ function PatientPage() {
                       {slot.first_name + " " + slot.last_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {slot.availability_date}
+                      {formatDate(slot.availability_date)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {slot.availability_time}
+                      {formatTime(slot.availability_time)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {slot.specialty}
@@ -183,17 +230,17 @@ function PatientPage() {
                 {patientAppointmentsList.map((entry, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {entry.doctor}
+                      {entry.first_name + " " + entry.last_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {entry.date}
+                      {formatDate(entry.availability_date)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {entry.time}
+                      {formatTime(entry.availability_time)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
-                        onClick={() => cancelAppointment(entry.doctor)}
+                        onClick={() => cancelAppointment(entry.index)}
                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition duration-150"
                       >
                         Cancel
