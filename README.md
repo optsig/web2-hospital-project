@@ -61,7 +61,7 @@ this page dynamically renders the following components:
 
 ![](./screenshots/features.png)
 
-#### Test imonials
+#### Testimonials
 
 ![](./screenshots/testimonials.png)
 
