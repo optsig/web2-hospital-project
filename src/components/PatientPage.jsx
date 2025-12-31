@@ -56,7 +56,7 @@ function PatientPage() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.delete("http://localhost:5000/appointments/" + appointment.id);
+          const response = await axios.delete("https://web2-hospital-backend.onrender.com/appointments/" + appointment.id);
           if (response.status === 200) {
             toast.info("appointment was canceled");
             getAppointments();
@@ -78,7 +78,7 @@ function PatientPage() {
   const handleBooking = async (avId) => {
     console.log("Attempting to book with:", { userId, availabilityId: avId });
     try {
-      const response = await axios.post("http://localhost:5000/bookappointment", { userId: userId, availabilityId: avId })
+      const response = await axios.post("https://web2-hospital-backend.onrender.com/bookappointment", { userId: userId, availabilityId: avId })
       if (response.status === 201) {
         toast.success("appointment booked successfully")
         getAvailabilities()
@@ -104,7 +104,7 @@ function PatientPage() {
 
   const getAvailabilities = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getavailabilities")
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getavailabilities")
       console.log("RESPONSE IN getAvailabilities:", response)
       if (response.status === 200) {
         console.log("AVAILABILITY RESPONSE DATA FORMAT:", response.data)
@@ -122,7 +122,7 @@ function PatientPage() {
   const getAppointments = async () => {
     try {
       console.log("USER ID: ", userId);
-      const response = await axios.get("http://localhost:5000/getappointments/" + userId)
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getappointments/" + userId)
       if (response.status === 200) {
         console.log("APPTS RESPONSE DATA FORMAT:", response.data)
         setPatientAppointmentsList(response.data)

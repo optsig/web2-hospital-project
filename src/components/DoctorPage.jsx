@@ -48,7 +48,7 @@ const formatDate = (isoString) => {
 
   const getDoctorAvailabilities = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getdoctoravailabilities/" + userId);
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getdoctoravailabilities/" + userId);
       if (response.status === 200) {
         console.log('====================================');
         console.log("AVAILABILITIES RESPONSE STRUCTURE: ", response.data);
@@ -64,7 +64,7 @@ const formatDate = (isoString) => {
 
   const getDoctorAppointments = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getdoctorappointments/" + userId);
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getdoctorappointments/" + userId);
       if (response.status === 200) {
         console.log("APPOINTMENTS RESPONSE STRUCTURE: ", response.data[0]);
         setBookedAppointmentList(response.data);
@@ -95,7 +95,7 @@ const formatDate = (isoString) => {
       console.log('====================================');
       console.log("ID: ", userId);
       console.log('====================================');
-      const response = await axios.post("http://localhost:5000/addavailability", { userId, date, time });
+      const response = await axios.post("https://web2-hospital-backend.onrender.com/addavailability", { userId, date, time });
       if (response.status === 201) {
         toast.success("Availability added");
         setDoctorAvailability(AvailabilityO);
@@ -116,7 +116,7 @@ const formatDate = (isoString) => {
     const availabilityId = doctorAvailabilityList[editIndex].id;
 
     try {
-      const response = await axios.put("http://localhost:5000/updateavailability/" + availabilityId,
+      const response = await axios.put("https://web2-hospital-backend.onrender.com/updateavailability/" + availabilityId,
         {
           date: doctorAvailability.date,
           time: doctorAvailability.time,
@@ -148,7 +148,7 @@ const formatDate = (isoString) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.delete("http://localhost:5000/deleteavailability/" + availabilityId);
+          const response = await axios.delete("https://web2-hospital-backend.onrender.com/deleteavailability/" + availabilityId);
           if (response.status === 200) {
             toast.info("availability canceled");
             getDoctorAvailabilities();
@@ -173,7 +173,7 @@ const formatDate = (isoString) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.delete("http://localhost:5000/doctor/deleteappointment/" + appointment.id);
+          const response = await axios.delete("https://web2-hospital-backend.onrender.com/deleteappointment/" + appointment.id);
 
           if (response.status === 200) {
             toast.info("Appointment canceled");

@@ -33,7 +33,7 @@ function AdminDashboard() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.delete("http://localhost:5000/doctors/" + targetId)
+          const response = await axios.delete("https://web2-hospital-backend.onrender.com/doctors/" + targetId)
           if (response.status === 200) {
             setDoctorList(doctorList.filter((doctor) => doctor.id !== targetId))
             toast.info("Doctor was deleted successfully")
@@ -70,7 +70,7 @@ function AdminDashboard() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/adddoctor", doctor)
+      const response = await axios.post("https://web2-hospital-backend.onrender.com/adddoctor", doctor)
       if (response.status === 201) {
         const newDoctor = { ...doctorToAdd }
         setDoctorList([...doctorList, newDoctor])
@@ -92,7 +92,7 @@ function AdminDashboard() {
 
   const getDoctors = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getdoctors")
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getdoctors")
       console.log("RESPONSE IN GETDOCTORS:", response)
       if (response.status === 200) {
         setDoctorList(response.data)
@@ -107,7 +107,7 @@ function AdminDashboard() {
 
   const getAppointmentsNumber = async() => {
     try{
-      const response = await axios.get("http://localhost:5000/getnumberofappointments")
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getnumberofappointments")
       console.log("response in getAppointmentsNumber:", response)
        if (response.status === 200) {
         console.log("RESPONSE STRUCTURE:", response)
@@ -123,7 +123,7 @@ function AdminDashboard() {
 
   const getPatientsNum = async() => {
     try{
-      const response = await axios.get("http://localhost:5000/getnumberofpatients")
+      const response = await axios.get("https://web2-hospital-backend.onrender.com/getnumberofpatients")
        if (response.status === 200) {
         setPatientsNum(response.data.count)
       }

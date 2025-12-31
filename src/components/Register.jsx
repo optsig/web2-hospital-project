@@ -17,7 +17,7 @@ function Register() {
   const nav = useNavigate()
 
   function handleRegister() {
-    axios.post("http://localhost:5000/adduser", user).then((response) => {
+    axios.post("https://web2-hospital-backend.onrender.com/adduser", user).then((response) => {
       console.log("user: ", user);
       console.log("response: ", response);
       toast.success("registration successful");

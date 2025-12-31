@@ -24,7 +24,7 @@ function Login() {
         e.preventDefault()
         console.log(user)
         try {
-            const response = await axios.post("http://localhost:5000/verifyuser", user)
+            const response = await axios.post("https://web2-hospital-backend.onrender.com/verifyuser", user)
 
             if (response.status === 200) {
                 console.log("success");
