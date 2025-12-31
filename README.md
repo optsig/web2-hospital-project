@@ -1,32 +1,47 @@
 # web2-hospital-project
 
-Simple hospital website built with React and Tailwind
+A hospital website with role-based access built with React and Tailwind CSS.
 
-## Project description
+## Features
 
-- A small React app demonstrating a landing site for a hospital: hero, features, about, testimonials, and basic auth pages.
-- Uses React Router for page navigation and Tailwind CSS for styling.
-- Public images are served from the `public/assets` folder.
+- **Landing page** with hero, features, about, and testimonials sections
+- **User authentication** with register/login functionality
+- **Role-based pages** for doctors, patients, and admins
+- **Protected routes** that require authentication
+- **Responsive design** using Tailwind CSS
 
-## Setup
+## Getting Started
 
-Prerequisites: Node.js (16+) and npm.
+**Prerequisites:** Node.js (16+) and npm
 
 1. Install dependencies
-
 ```powershell
 npm install
 ```
 
-2. Run the development server
-
+2. Start the development server
 ```powershell
 npm start
 ```
 
-3. Open the app
+3. Open http://localhost:3000 in your browser
 
-Open http://localhost:3000 in your browser.
+## Tech Stack
+
+- React with React Router for navigation
+- Tailwind CSS for styling
+- Global Context API for state management
+
+## Pages
+
+**Public**
+- Landing page (hero, features, about, testimonials)
+- Register / Login
+
+**Protected** (requires authentication)
+- Doctor page
+- Patient page  
+- Admin page
 
 ## Project Screenshots:
 
@@ -46,7 +61,7 @@ this page dynamically renders the following components:
 
 ![](./screenshots/features.png)
 
-#### Testimonials
+#### Test imonials
 
 ![](./screenshots/testimonials.png)
 
@@ -64,13 +79,13 @@ this page dynamically renders the following components:
 
 ### Doctor Page
 
-![](./screenshots/doctor-page.png)
+![](./screenshots/doctor-updated.png)
 
 ### Patient Page 
 
-![](./screenshots/patient-page.png)
+![](./screenshots/patient-updated.png)
 
 ### Admin Page
 
-![](./screenshots/admin-page.png)
+![](./screenshots/admin-updated.png)
 
