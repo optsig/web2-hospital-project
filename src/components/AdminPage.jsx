@@ -142,7 +142,7 @@ function AdminDashboard() {
 
   return (
     <div className="p-8 max-w-3xl my-24 mx-auto bg-slate-50 h-full">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Hello {username}</h1>
+      <h1 className="text-3xl font-bold text-blue-600 mb-6 capitalize">Hello {username}</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
         <div className="bg-white shadow p-6 rounded-lg">
@@ -249,8 +249,8 @@ function AdminDashboard() {
                   className="flex justify-between items-center bg-white p-4 shadow rounded"
                 >
                   <div>
-                    <p className="font-bold">{entry.first_name} {entry.last_name}</p>
-                    <p className="text-sm text-gray-600">{entry.specialty}</p>
+                    <p className="font-bold capitalize">{entry.first_name + " " + entry.last_name}</p>
+                    <p className="text-sm text-gray-600 capitalize">{entry.specialty}</p>
                   </div>
                   <button
                     onClick={() => deleteDoctor(entry.first_name, entry.last_name, entry.id)}

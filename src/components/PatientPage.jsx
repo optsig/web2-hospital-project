@@ -9,7 +9,6 @@ import { GlobalContext } from "./GlobalContext"
 function PatientPage() {
 
   const { username, userId } = useContext(GlobalContext)
-  const [avId, setAvId] = useState()
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -44,8 +43,7 @@ function PatientPage() {
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        setAvId(slot.id)
-        handleBooking()
+        handleBooking(slot.id)
       }
     });
   };
@@ -72,14 +70,13 @@ function PatientPage() {
             getAvailabilities();
           }
           console.log("error in cancel appointment: ", error);
-
         }
-
       }
     });
   };
 
-  const handleBooking = async () => {
+  const handleBooking = async (avId) => {
+    console.log("Attempting to book with:", { userId, availabilityId: avId });
     try {
       const response = await axios.post("http://localhost:5000/bookappointment", { userId: userId, availabilityId: avId })
       if (response.status === 201) {
@@ -150,7 +147,7 @@ function PatientPage() {
 
   return (
     <div className="p-4 md:p-8 max-w-6xl my-12 mx-auto bg-white rounded-xl shadow-2xl">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-blue-600 mb-8 border-b pb-4">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-blue-600 mb-8 border-b pb-4 capitalize">
         Hello {username}
       </h1>
 
@@ -200,8 +197,8 @@ function PatientPage() {
 
               <tbody className="bg-white divide-y divide-gray-200">
                 {availableSlots.map((slot, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={slot.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 capitalize">
                       {slot.first_name + " " + slot.last_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -258,8 +255,8 @@ function PatientPage() {
 
               <tbody className="bg-white divide-y divide-gray-200">
                 {patientAppointmentsList.map((entry, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={entry.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 capitalize">
                       {entry.first_name + " " + entry.last_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
