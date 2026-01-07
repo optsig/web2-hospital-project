@@ -28,11 +28,11 @@ function Register() {
       }
     }).catch((err) => {
       console.log("Error: ", err);
-      if (err.status === 400) {
+      if (err.status === 400 && err.type === "missing_fields") {
         toast.error("please fill out the fields")
       }
-      else if (err.status === 418) {
-        toast.error("user with that username already exists")
+      else if (err.status === 400 && err.type === "duplicate_username"){
+        toast.error("this username already exists")
       }
     })
   }
