@@ -20,14 +20,16 @@ function Register() {
     axios.post("https://web2-hospital-backend.onrender.com/adduser", user).then((response) => {
       console.log("user: ", user);
       console.log("response: ", response);
-      toast.success("registration successful");
-      nav('/login');
+      if (response.status === 201) {
+        toast.success("registration successful");
+        nav('/login');
+      }
     }).catch((err) => {
       console.log("Error: ", err);
-      if(err.status === 400){
+      if (err.status === 400) {
         toast.error("please fill out the fields")
       }
-      else if(err.status === 418){
+      else if (err.status === 418) {
         toast.error("user with that username already exists")
       }
     })
