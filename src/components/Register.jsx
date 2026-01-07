@@ -9,7 +9,9 @@ function Register() {
 
   var UserO = {
     username: "",
-    password: ""
+    password: "",
+    firstName: "",
+    lastName: ""
   }
 
   const [user, setUser] = useState(UserO)
@@ -44,7 +46,10 @@ function Register() {
       <h1 className="mb-5 text-2xl font-semibold">Register</h1>
 
       <form className="space-y-4"
-        onSubmit={(e) => { e.preventDefault() }}>
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleRegister()
+        }}>
         <div>
           <input
             name="username"
@@ -66,9 +71,28 @@ function Register() {
         </div>
 
         <div>
+          <input
+            name="firstName"
+            type="text"
+            placeholder="First Name"
+            className="w-full px-4 py-2 border rounded-lg"
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <input
+            name="lastName"
+            type="text"
+            placeholder="Last Name"
+            className="w-full px-4 py-2 border rounded-lg"
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
           <button type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            onClick={handleRegister}>
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
             Sign Up
           </button>
         </div>

@@ -128,6 +128,7 @@ function PatientPage() {
         setPatientAppointmentsList(response.data)
       }
       if (response.status === 204) {
+        setPatientAppointmentsList([]);
         console.log("no appts found for user_id: ", userId);
 
       }
